@@ -2,23 +2,29 @@ import random
 
 player = 'O'
 ai = 'X'
-winningMoves = []
-normalMoves = []
+depth = 9
+
 board = [['_', '_', '_'],
          ['_', '_', '_'],
          ['_', '_', '_']]
 exampleBoard = [['1', '2', '3'],
                 ['4', '5', '6'],
                 ['7', '8', '9']]
+
+
 def printBoard(customBoard):
     for row in range(3):
         print(customBoard[row])
+
+
 def movesLeft():
     for row in range(3):
         for col in range(3):
             if board[row][col] == '_':
                 return True
     return False
+
+
 def isGameOver():
     for row in range(3):
         if(board[row][0] == board[row][1] and board[row][0] == board[row][2]):
@@ -46,6 +52,8 @@ def isGameOver():
         return False
     else:
         return True
+
+
 def isWinScore():
     for row in range(3):
         if(board[row][0] == board[row][1] and board[row][0] == board[row][2]):
@@ -71,10 +79,10 @@ def isWinScore():
             return 1
     return 0
 
+
 def minMax(boardState, depth, alpha, beta, maxMove):
     if depth == 0 or isGameOver():
         return [-1, -1, isWinScore()]
-
     if maxMove:
         bestMove = [-1, -1, -100]
         for row in range(3):
@@ -111,6 +119,7 @@ def minMax(boardState, depth, alpha, beta, maxMove):
             if beta <= alpha:
                 break
         return bestMove
+
 
 def humanMove():
     printBoard(exampleBoard)
@@ -152,7 +161,6 @@ def humanMove():
             humanInput = int(input())
             valid = False
 
-depth = 9
 
 while not isGameOver():
     if depth % 2 == 1:
@@ -160,10 +168,15 @@ while not isGameOver():
             board[random.randint(0, 2)][random.randint(0, 2)] = ai
         else:
             move = minMax(board, 9, -100, 100, True)
-            print(move)
             board[move[0]][move[1]] = ai
     else:
         humanMove()
     depth -= 1
 
+if isWinScore() == -1:
+    print("Congrats! You Win! This Is VERY RARE!")
+elif isWinScore() == 0:
+    print("Tie Game! Better Luck Next Time!")
+else:
+    print("AI Wins! Better Luck Next Time! You're Going To Need It!")
 printBoard(board)
