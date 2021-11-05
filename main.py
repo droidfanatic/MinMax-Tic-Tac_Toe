@@ -167,7 +167,7 @@ while not isGameOver():
         if depth == 9:
             board[random.randint(0, 2)][random.randint(0, 2)] = ai
         else:
-            move = minMax(board, 9, -100, 100, True)
+            move = minMax(board, depth, -100, 100, True)
             board[move[0]][move[1]] = ai
     else:
         humanMove()
